@@ -32,7 +32,7 @@ def main() -> None:
         assert model(sample).shape == (2, 1)
         best, results = grid_search(data, torch.device("cpu"), root / "results", max_combinations=1, epochs=2)
         assert len(results) == 1 and set(best) >= set(GRID)
-    print("quick_test passed")
+    print("test passed")
 
 
 if __name__ == "__main__":
