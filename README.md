@@ -1,7 +1,9 @@
 1. Program description
-   This project modifies the CNN structure to build ResCFE, a residual convolutional feature‑extraction module for retaining temporal information, which is coupled with LSTM and attention mechanisms for landslide displacement prediction.
+
+This project modifies the CNN structure to build ResCFE, a residual convolutional feature‑extraction module for retaining temporal information, which is coupled with LSTM and attention mechanisms for landslide displacement prediction.
+
 2. Input data
-   This program adopts CEEMDAN‑decomposed and reconstructed landslide monitoring data, with CSV files as the mandatory input format. The first column corresponds to time; the second and third columns are target columns (`period_term`/`trend_term`) configured by the `--target` argument. The fourth column represents the covariate column, set through the `--features` argument.
+This program adopts CEEMDAN‑decomposed and reconstructed landslide monitoring data, with CSV files as the mandatory input format. The first column corresponds to time; the second and third columns are target columns (`period_term`/`trend_term`) configured by the `--target` argument. The fourth column represents the covariate column, set through the `--features` argument.
    Example CSV：
 
     ```text
@@ -10,8 +12,10 @@
     2017-01-02,12.63,5.2,174.35
     2017-01-03,12.71,0.8,174.10
     ```
+    
 3. Installation and execution
-   ```bash
+
+```bash
 python -m pip install -r requirements.txt
 ```
 
@@ -25,7 +29,8 @@ For a target-only data set, omit `--features`. Use `--device cpu` to force CPU e
 
 The program fits the Min-Max scaler using the training portion, trains every requested architecture combination, and uses validation MSE for model selection. 
 
-4. results
+4. results 
+
 All files are saved in the directory specified by `--output` (default: `results`). 
 | File | Description |
 | --- | --- |
