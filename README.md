@@ -2,7 +2,7 @@
    This project modifies the CNN structure to build ResCFE, a residual convolutional feature‑extraction module for retaining temporal information, which is coupled with LSTM and attention mechanisms for landslide displacement prediction.
 2. Input data
    This program adopts CEEMDAN‑decomposed and reconstructed landslide monitoring data, with CSV files as the mandatory input format. The first column corresponds to time; the second and third columns are target columns (`period_term`/`trend_term`) configured by the `--target` argument. The fourth column represents the covariate column, set through the `--features` argument.
-   Example CSV / CSV 示例：
+   Example CSV：
 
     ```text
     date,period_term,trend_term,reservoir_water_level
@@ -34,7 +34,7 @@ All files are saved in the directory specified by `--output` (default: `results`
 | `test_metrics.json` | Test-set RMSE, MAE, and R² after inverse scaling. 
 | `best_model.pt` | PyTorch state dictionary of the selected model. 
 
-5. Test program / 测试程序
+5. Test program 
 
 The monitoring data are not included in this repository. They are sourced from the Chinese National Cryosphere Desert Data Center ([http://www.ncdc.ac.cn](http://www.ncdc.ac.cn)). Due to data
 restrictions, the authors do not have permission to upload or redistribute the data.
