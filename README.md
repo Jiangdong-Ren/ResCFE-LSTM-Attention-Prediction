@@ -35,7 +35,7 @@ python -m pip install -r requirements.txt
 python ResCFE_LSTM_Attention.py \
   --data_path data/ZD3_components.csv \
   --covariates RE1 \
-  --seq_len 60 \
+  --seq_len 30 \
   --horizon 1 \
   --output results \
   --device auto
