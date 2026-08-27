@@ -2,53 +2,68 @@
 
 This project modifies the CNN structure to build ResCFE, a residual convolutional feature‑extraction module for retaining temporal information, which is coupled with LSTM and attention mechanisms for landslide displacement prediction.
 
-2. Input data
-This program adopts CEEMDAN‑decomposed and reconstructed landslide monitoring data, with CSV files as the mandatory input format. The first column corresponds to time; the second and third columns are target columns (`period_term`/`trend_term`) configured by the `--target` argument. The fourth column represents the covariate column, set through the `--features` argument.
-   Example CSV：
+2. Data Preparation & Format
 
-    ```text
-    date,period_term,trend_term,reservoir_water_level
-    2017-01-01,12.50,0.0,174.20
-    2017-01-02,12.63,5.2,174.35
-    2017-01-03,12.71,0.8,174.10
-    ```
-    
+The input is a CSV file sorted chronologically, containing the following columns:
+
+|Column|Description|
+|---|---|
+| `date` | Date column, e.g. `2020-01-01`|
+| `trend` |CEEMDAN trend component|
+| `period` |CEEMDAN period component|
+| `ZD1` |Raw cumulative displacement (for final evaluation)|
+| `Reservior-water`| Covariate columns (reservoir water level)|
+
+Sample Data
+```csv
+date,ZD1,trend,period,Reservior_water
+2018-01-01,12.34,10.12,2.22,145.6
+2018-01-02,12.45,10.18,2.27,145.8
+2018-01-03,12.50,10.24,2.26,146.1
+...
+```
+The monitoring data are not included in this repository. They are sourced from the Chinese National Cryosphere Desert Data Center ([http://www.ncdc.ac.cn](http://www.ncdc.ac.cn)). Due to data
+restrictions, the authors do not have permission to upload or redistribute the data.  
+
 3. Installation and execution
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Run the ResCFE_LSTM_Attention.py
-
 ```bash
-python ResCFE_LSTM_Attention.py --data path/to/data.csv --target displacement --features rainfall reservoir --output results
+python ResCFE_LSTM_Attention.py \
+  --data_path data/ZD3_components.csv \
+  --covariates RE1 \
+  --seq_len 60 \
+  --horizon 1 \
+  --output results \
+  --device auto
 ```
-
-For a target-only data set, omit `--features`. Use `--device cpu` to force CPU execution. Use `--max-combinations 1` only for a short debugging run; omit it for the complete search.
-
-The program fits the Min-Max scaler using the training portion, trains every requested architecture combination, and uses validation MSE for model selection. 
 
 4. results 
 
-All files are saved in the directory specified by `--output` (default: `results`). 
-| File | Description |
-| --- | --- |
-| `grid_search_results.csv` | Validation MSE and hyperparameters for every evaluated combination. 
-| `best_config.json` | The selected configuration and its validation MSE. 
-| `test_metrics.json` | Test-set RMSE, MAE, and R² after inverse scaling. 
-| `best_model.pt` | PyTorch state dictionary of the selected model. 
+ All results are saved under the directory specified by `--output` (default: `results/`).
+ 
+|File|Description|
+|---|---|
+| `trend_grid_search_results.csv` |  All grid search results for trend (sorted by val MSE) |
+| `trend_best_config.json` |  Best hyperparameter config for trend |
+| `trend_best_model.pt` | Best model weights for trend |
+| `trend_test_metrics.json` | Test metrics for trend |
+| `Trend_metrics.txt` | Train & test metrics for trend (text) |
+| `period_grid_search_results.csv` | All grid search results for period |
+| `period_best_config.json` | Best hyperparameter config for period |
+| `period_best_model.pt` | Best model weights for period |
+| `period_test_metrics.json` | Test metrics for period |
+| `Period_metrics.txt` | Train & test metrics for period (text) |
+| `final_total_metrics.json` | Final metrics for total displacement (trend + period) |
 
-5. Test program 
-
-The monitoring data are not included in this repository. They are sourced from the Chinese National Cryosphere Desert Data Center ([http://www.ncdc.ac.cn](http://www.ncdc.ac.cn)). Due to data
-restrictions, the authors do not have permission to upload or redistribute the data.
-
-test.py creates temporary synthetic data, checks the model forward pass, and runs one grid-search configuration. It does not require the unavailable monitoring data.
-
-Run the test 
-
+5. Debug Run
 ```bash
-python test.py
+# Search only the first 5 combinations for quick validation
+python ResCFE_LSTM_Attention.py --data_path data/sample.csv --max-combinations 5
 ```
+6.License
+MIT License
 
