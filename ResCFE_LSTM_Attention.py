@@ -14,11 +14,13 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import MinMaxScaler
 from torch.utils.data import DataLoader, TensorDataset
 
+#Fixed parameters
 BATCH_SIZE = 32
 EPOCHS = 200
 LEARNING_RATE = 0.001
 DROPOUT = 0.1
 
+#search range
 GRID = {
     "lstm_hidden": (32, 64, 128),
     "lstm_layers": (1, 2, 3),
